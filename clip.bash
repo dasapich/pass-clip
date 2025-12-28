@@ -118,8 +118,8 @@ cmd_clip() {
     cd "$PASSWORD_STORE_DIR" || exit 1
 
     # Select a passfile
-    passfile=$(find -L "$PASSWORD_STORE_DIR" -path '*/.git' -prune -o -path '*/.extensions' -prune -o -iname '*.gpg' |
-        sed -e 's|^'"$PASSWORD_STORE_DIR"'/||; s/^.git$//; s/.gpg$//' |
+    passfile=$(fd -i -e gpg -E '.git' -E '.extensions' --strip-cwd-prefix --base-directory "$PASSWORD_STORE_DIR" |
+        sd '\.gpg$' '' |
         sort |
         eval "$menu")
 
